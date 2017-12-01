@@ -1,8 +1,11 @@
 module Main where
 import Data.Char (digitToInt)
-main :: IO ()
-main = fmap calculateSum getLine >>= putStrLn
+
+calculateSum :: String -> String
+calculateSum = show . sum . (fmap fst) . (filter firstEqSecond) . listToPairs . (fmap digitToInt)
   where
     listToPairs l = (zip l ((last l): l))
     firstEqSecond (a , b) = a == b
-    calculateSum = show . sum . (fmap fst) . (filter firstEqSecond) . listToPairs . (fmap digitToInt)
+
+main :: IO ()
+main = fmap calculateSum getLine >>= putStrLn
