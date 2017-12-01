@@ -1,9 +1,7 @@
 module Main where
 import Data.Char (digitToInt)
 main :: IO ()
-main = do
-  s <- fmap calculateSum getLine
-  putStrLn s
+main = fmap calculateSum getLine >>= putStrLn
   where
     listToPairs l = (zip l ((last l): l))
     firstEqSecond (a , b) = a == b
