@@ -2,34 +2,23 @@ module Main where
 import Data.Char (digitToInt)
 import Data.Array
 
+rotate :: [a] -> Int -> [a]
+rotate l n = drop n l ++ take n l
+
 readNumbers :: IO [Int]
 readNumbers = getLine >>= return . (fmap digitToInt)
 
-calculateSum :: [Int] -> Int
-calculateSum = sum . (fmap fst) . (filter firstEqSecond) . listToPairs
+calculateSum :: Int -> [Int] -> Int
+calculateSum n l = (sum . (fmap fst) . (filter firstEqSecond) . listToPairs) l
   where
-    listToPairs l = (zip l ((last l): l))
+    listToPairs l = (zip l (rotate l n))
     firstEqSecond (a , b) = a == b
 
-printSum :: [Int] -> IO()
-printSum = putStrLn . show . calculateSum
-
-
-halfSum :: [Int] -> Int
-halfSum ns = sumIndexedList indexedList
-  where
-    size = length ns
-    indexedList = zip [0..size] ns
-    a = array (0, size-1) indexedList
-    nextIndex i = (i + size `div` 2) `mod` size
-    isHalfMatch (i, n)= n == a ! (nextIndex i)
-    sumIndexedList = sum . (fmap snd) . (filter isHalfMatch)
-
-printMatchHalf :: [Int] -> IO()
-printMatchHalf = putStrLn . show . halfSum
+printSum :: Int -> [Int] -> IO()
+printSum n l = (putStrLn . show . (calculateSum n)) l
 
 main :: IO ()
 main = do
   ns <- readNumbers
-  printSum ns
-  printMatchHalf ns
+  printSum 1 ns
+  printSum (length ns `div` 2) ns
