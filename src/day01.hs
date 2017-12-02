@@ -1,6 +1,5 @@
 module Main where
 import Data.Char (digitToInt)
-import Data.Array
 
 rotate :: [a] -> Int -> [a]
 rotate l n = drop n l ++ take n l
