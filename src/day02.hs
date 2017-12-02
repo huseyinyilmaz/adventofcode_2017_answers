@@ -1,9 +1,19 @@
 module Main where
 import Data.Char (digitToInt)
+import Data.List (sort)
+
+readNumbers :: IO [[Int]]
+readNumbers = do
+  content <- getContents
+  return $ fmap (sort . readLine) (lines content)
+  where
+    readLine :: String -> [Int]
+    readLine = (fmap read) . words
+
+minMaxSum :: [[Int]] -> Int
+minMaxSum lss = sum $ fmap (\x -> maximum x - minimum x) lss
 
 main :: IO ()
 main = do
-  content <- getContents
-  let ls = ((fmap ((fmap read) . words) (lines content)))
-  let s = (sum $ fmap (\x -> maximum x - minimum x) ls)
-  putStrLn $ show s
+  ls <- readNumbers
+  (putStrLn . show . minMaxSum) ls
