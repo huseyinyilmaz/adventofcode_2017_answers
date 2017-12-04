@@ -1,18 +1,5 @@
 module Main where
-import Data.Char (digitToInt)
 import Data.List (sort)
-import Control.Applicative((<|>))
-import Data.Maybe (fromJust)
-import Control.Monad.State.Lazy
--- import Control.Monad.Trans.State
-import qualified Data.Map.Strict as Map
-
-type Coordinate = (Int, Int)
-
-type CoordinateMapping = Map.Map Coordinate Int
-
-type AppM = State (Int, CoordinateMapping)
-
 
 readWords :: IO [[String]]
 readWords = do
