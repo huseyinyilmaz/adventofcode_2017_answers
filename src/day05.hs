@@ -1,26 +1,26 @@
 module Main where
-import Data.Array
+import Data.Vector.Primitive
 
-steps :: Array Int Int -> Int -> Int -> [Int]
+steps :: Vector Int -> Int -> Int -> [Int]
 steps a len i
   | i<0 || i>=len = []
   | otherwise = i : steps (a//[(i, v+1)]) len (v+i)
     where
       v = a!i
 
-steps2 :: Array Int Int -> Int -> Int -> [Int]
-steps2 a len i
+steps2 :: Vector Int -> Int -> Int -> [Int]
+steps2 v len i
   | i<0 || i>=len = []
-  | otherwise = i : steps2 (a//[(i, newV)]) len (v+i)
+  | otherwise = i : steps2 (v//[(i, newV)]) len (val+i)
     where
-      v = a!i
-      newV = if v>2 then v-1 else v+1
+      val = v!i
+      newV = if val>2 then val-1 else val+1
 
 main :: IO ()
 main = do
   content <- getContents
   let is = ((fmap read) . lines) content :: [Int]
-  let len = length is
-  let a = array (0, len-1) (zip [0..] is)
-  print $ length $ steps a len 0
-  print $ length $ steps2 a len 0
+  let v = fromList is
+  let len = Data.Vector.Primitive.length v
+  print $ Prelude.length $ steps v len 0
+  print $ Prelude.length $ steps2 v len 0
